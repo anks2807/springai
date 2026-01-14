@@ -12,9 +12,4 @@ public class SpringaiApplication {
 		SpringApplication.run(SpringaiApplication.class, args);
 	}
 
-	@Bean
-	public ChatClient chatClient(ChatClient.Builder builder) {
-		return builder.build();
-	}
-
 }
