@@ -43,7 +43,7 @@ public class ChatController {
 
 
     @GetMapping("/chatWithHRBot")
-    public String chatWithHRBot(@RequestParam String message, @RequestHeader String chatId) {
+    public String chatWithHRBot(@RequestParam String message, @RequestHeader(name = "chat_id", required = false) String chatId) {
         return chatClientWithMemory.prompt()
         .advisors(spec -> spec.param("chatId", chatId))
         .system(systemTemplate)
