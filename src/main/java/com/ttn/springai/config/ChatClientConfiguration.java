@@ -5,6 +5,8 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.mcp.AsyncMcpToolCallbackProvider;
+import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,6 +39,11 @@ public class ChatClientConfiguration {
     @Bean("chatMemoryAdvisor")
     MessageChatMemoryAdvisor chatMemoryAdvisor() {
         return MessageChatMemoryAdvisor.builder(chatMemory()).build();
+    }
+
+    @Bean("chatClientForTools")
+    public ChatClient chatClientForTools(SyncMcpToolCallbackProvider toolCallbackProvider) {
+        return builder.defaultAdvisors(chatMemoryAdvisor()).defaultToolCallbacks(toolCallbackProvider.getToolCallbacks()).build();
     }
 
 }
