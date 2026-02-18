@@ -1,5 +1,6 @@
 package com.ttn.springai.config;
 
+import com.ttn.springai.advisors.LogAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -15,10 +16,13 @@ public class ChatClientConfiguration {
 
     private final ChatClient.Builder builder;
     private final JdbcChatMemoryRepository jdbcChatMemoryRepository;
+    private final LogAdvisor logAdvisor;
 
-    public ChatClientConfiguration(ChatClient.Builder builder, JdbcChatMemoryRepository jdbcChatMemoryRepository) {
+
+    public ChatClientConfiguration(ChatClient.Builder builder, JdbcChatMemoryRepository jdbcChatMemoryRepository, LogAdvisor logAdvisor) {
         this.builder = builder;
         this.jdbcChatMemoryRepository = jdbcChatMemoryRepository;
+        this.logAdvisor = logAdvisor;
     }
 
     @Bean
@@ -28,7 +32,7 @@ public class ChatClientConfiguration {
 
     @Bean
     public ChatClient chatClient() {
-        return builder.build();
+        return builder.defaultAdvisors(logAdvisor).build();
     }
 
     @Bean("chatClientWithMemory")
